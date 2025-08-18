@@ -7,11 +7,13 @@ import DashboardFilters from './DashboardFilters';
 import StatsCards from './StatsCards';
 import ReviewsList from './ReviewsList';
 import PropertySelector from './PropertySelector';
+import Sidebar from './Sidebar';
 
 export default function Dashboard() {
   const { reviews, loading, error, toggleApproval, getFilteredReviews, getReviewStats } = useReviews();
   const [filters, setFilters] = useState<DashboardFiltersType>({});
   const [selectedProperty, setSelectedProperty] = useState<string>('all');
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   const currentFilters = {
     ...filters,
@@ -50,29 +52,42 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <DashboardHeader />
+      {/* Sidebar */}
+      <Sidebar 
+        isCollapsed={sidebarCollapsed} 
+        onToggle={() => setSidebarCollapsed(!sidebarCollapsed)} 
+      />
       
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="mb-6">
-          <PropertySelector
-            properties={mockProperties}
-            selectedProperty={selectedProperty}
-            onPropertyChange={setSelectedProperty}
-          />
-        </div>
+      {/* Main Content */}
+      <div className={`transition-all duration-300 ${
+        sidebarCollapsed ? 'ml-16' : 'ml-64'
+      }`}>
+        <DashboardHeader />
+        
+        <div className="px-4 sm:px-6 lg:px-8 py-8">
+          <div className="max-w-7xl mx-auto">
+            <div className="mb-6">
+              <PropertySelector
+                properties={mockProperties}
+                selectedProperty={selectedProperty}
+                onPropertyChange={setSelectedProperty}
+              />
+            </div>
 
-        <div className="mb-6">
-          <DashboardFilters filters={filters} onFiltersChange={setFilters} />
-        </div>
+            <div className="mb-6">
+              <DashboardFilters filters={filters} onFiltersChange={setFilters} />
+            </div>
 
-        <div className="mb-8">
-          <StatsCards stats={stats} />
-        </div>
+            <div className="mb-8">
+              <StatsCards stats={stats} />
+            </div>
 
-        <ReviewsList
-          reviews={filteredReviews}
-          onToggleApproval={toggleApproval}
-        />
+            <ReviewsList
+              reviews={filteredReviews}
+              onToggleApproval={toggleApproval}
+            />
+          </div>
+        </div>
       </div>
     </div>
   );
