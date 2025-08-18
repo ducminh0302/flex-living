@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Menu } from 'lucide-react';
+import { Menu, ExternalLink } from 'lucide-react';
 import { DashboardFilters as DashboardFiltersType } from '../../types';
 import { mockProperties } from '../../data/mockReviews';
 import { useReviews } from '../../hooks/useReviews';
@@ -58,14 +58,25 @@ export default function Dashboard() {
       <div className="md:hidden bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between sticky top-0 z-30">
         <button
           onClick={() => setMobileMenuOpen(true)}
-          className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+          className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors flex-shrink-0"
         >
           <Menu className="h-6 w-6" />
         </button>
-        <div className="flex items-center space-x-2">
-          <span className="text-lg font-semibold text-gray-900">Dashboard</span>
+        
+        <div className="flex items-center space-x-2 flex-1 justify-center min-w-0">
+          <span className="text-lg font-semibold text-gray-900 truncate">Dashboard</span>
         </div>
-        <div className="w-10"></div> {/* Spacer for centering */}
+        
+        <button
+          onClick={() => {
+            window.open('/reviews', '_blank');
+          }}
+          className="flex items-center space-x-1 px-3 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors flex-shrink-0"
+          title="View Public Page"
+        >
+          <ExternalLink className="h-4 w-4" />
+          <span className="hidden xs:inline text-sm">View</span>
+        </button>
       </div>
 
       {/* Sidebar */}
