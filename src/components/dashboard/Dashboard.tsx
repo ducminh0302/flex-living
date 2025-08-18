@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { Menu } from 'lucide-react';
 import { DashboardFilters as DashboardFiltersType } from '../../types';
 import { mockProperties } from '../../data/mockReviews';
 import { useReviews } from '../../hooks/useReviews';
@@ -10,10 +11,11 @@ import PropertySelector from './PropertySelector';
 import Sidebar from './Sidebar';
 
 export default function Dashboard() {
-  const { reviews, loading, error, toggleApproval, getFilteredReviews, getReviewStats } = useReviews();
+  const { loading, error, toggleApproval, getFilteredReviews, getReviewStats } = useReviews();
   const [filters, setFilters] = useState<DashboardFiltersType>({});
   const [selectedProperty, setSelectedProperty] = useState<string>('all');
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const currentFilters = {
     ...filters,
@@ -52,19 +54,38 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* Mobile Header with Menu Button */}
+      <div className="md:hidden bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between sticky top-0 z-30">
+        <button
+          onClick={() => setMobileMenuOpen(true)}
+          className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+        >
+          <Menu className="h-6 w-6" />
+        </button>
+        <div className="flex items-center space-x-2">
+          <span className="text-lg font-semibold text-gray-900">Dashboard</span>
+        </div>
+        <div className="w-10"></div> {/* Spacer for centering */}
+      </div>
+
       {/* Sidebar */}
       <Sidebar 
         isCollapsed={sidebarCollapsed} 
-        onToggle={() => setSidebarCollapsed(!sidebarCollapsed)} 
+        onToggle={() => setSidebarCollapsed(!sidebarCollapsed)}
+        isMobileOpen={mobileMenuOpen}
+        onMobileToggle={() => setMobileMenuOpen(!mobileMenuOpen)}
       />
       
       {/* Main Content */}
       <div className={`transition-all duration-300 ${
-        sidebarCollapsed ? 'ml-16' : 'ml-64'
-      }`}>
-        <DashboardHeader />
+        sidebarCollapsed ? 'md:ml-16' : 'md:ml-64'
+      } ml-0`}>
+        {/* Desktop Header */}
+        <div className="hidden md:block">
+          <DashboardHeader />
+        </div>
         
-        <div className="px-4 sm:px-6 lg:px-8 py-8">
+        <div className="px-4 sm:px-6 lg:px-8 py-4 md:py-8">
           <div className="max-w-7xl mx-auto">
             <div className="mb-6">
               <PropertySelector
