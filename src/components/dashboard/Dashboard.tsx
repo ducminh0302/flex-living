@@ -71,11 +71,11 @@ export default function Dashboard() {
           onClick={() => {
             window.open('/reviews', '_blank');
           }}
-          className="flex items-center space-x-1 px-3 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors flex-shrink-0"
+          className="flex items-center space-x-2 px-4 py-2 text-blue-600 hover:text-blue-700 hover:bg-blue-50 rounded-lg transition-colors flex-shrink-0"
           title="View Public Page"
         >
           <ExternalLink className="h-4 w-4" />
-          <span className="hidden xs:inline text-sm">View</span>
+          <span className="hidden sm:inline">View Public Page</span>
         </button>
       </div>
 
